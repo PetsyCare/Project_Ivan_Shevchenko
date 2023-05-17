@@ -13,7 +13,16 @@
 #
 #Сбарсываем ссылку на файл в репозитории
 
+def type_check(fn):
+    def wrapper(*args, **kwargs):  # Проверка типа аргументов
+        for arg in args:
+            print(f'Тип - {type(arg).__name__}!')  # raise - команда для вызова указанного исключения
 
+        return fn(*args, **kwargs)
+
+    return wrapper
+
+@type_check
 def my_fn(data):
     sum = 0
     col_b = 0
@@ -46,12 +55,8 @@ def my_fn(data):
 
     elif isinstance(data, str):
         return print(f'Длина строки: {len(data)}')
-def my_dec(fn):
-    def wrapper(arg):
-        if isinstance(arg, tuple): print('Вы ввели кортеж')
-        return fn(arg)
-    return wrapper
-@my_dec
+
+
 my_fn((1,2,3,'a','bc8?',7,8,9))
 my_fn([1,2,3,'a','bc8?'])
 my_fn(7858)
