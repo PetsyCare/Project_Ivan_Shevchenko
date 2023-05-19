@@ -17,10 +17,9 @@ def modify_list(list_int):
     while len(list_int) > list_id:
         if list_int[list_id] % 2 != 0:
             del list_int[list_id]
-            list_id -= 1
         else:
             list_int[list_id] = int(list_int[list_id] / 2)
-        list_id += 1
+            list_id += 1
     return list_int
 
 # выводим результат
