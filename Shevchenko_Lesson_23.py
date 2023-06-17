@@ -1,15 +1,19 @@
-#Pygame
 import random
-
 import pygame
+
 pygame.init()
+
+# цветовая гамма
 blue = (0, 0, 255) # код синего цвета
 red = (255, 0, 0)
 white = (255, 255, 255)
 black = (0,0,0)
+screen_color = (50, 153, 213)
+green = (0, 255, 0)
 
-dis = pygame.display.set_mode((800, 500)) # размер окна
+dis = pygame.display.set_mode((800, 600)) # размер окна
 pygame.display.set_caption("Snake")
+
 # скорость змейки
 step = 10
 
@@ -25,7 +29,9 @@ x_1 = 100 # координата по горизонтали
 y_1 = 400 # коорд по вертикале
 x_1_change = 0 # шаг змейки
 y_1_change = 0 # шаг по вертикале
-
+# список координат змейки
+snake_coords = []
+Length_of_snake = 1
 # коорд яблока
 apple_x = random.randrange(0, window_size[0], 10) # используем randrange потому что здесь можно указать шаг (10)
 apple_y = random.randrange(0, window_size[1], 10)
@@ -41,6 +47,10 @@ for i in range(5):
     obstacle_x = random.randrange(0, window_size[0], 10)
     obstacle_y = random.randrange(0, window_size[1], 10)
     obstacles.append((obstacle_x, obstacle_y))
+# функция змейки
+def our_snake(step, snake_list):
+    for x in snake_list:
+        pygame.draw.rect(dis, black, [x[0], x[1], step, step])
 
 
 while not game_over: # начало основного цикла игры
@@ -78,8 +88,21 @@ while not game_over: # начало основного цикла игры
         x_1 += x_1_change # изм факт коорд змейки
         y_1 += y_1_change
 
-    dis.fill(white)
+    dis.fill(screen_color)
+    # ------ cgb;tyysq rjl --------------------
+    snake_Head = []
+    snake_Head.append(x_1)
+    snake_Head.append(y_1)
+    snake_coords.append((x_1, y_1))
+    if len(snake_coords) > Length_of_snake:
+        del snake_coords[0]
 
+    for x in snake_coords[:-1]:
+        if x == snake_Head:
+            game_close = True
+
+    our_snake(step, snake_coords)
+    # --------- rjytw cgb;tyyjuj rjlf ----------
     for obstacle in obstacles:
         pygame.draw.rect(dis, black, [obstacle[0], obstacle[1], 10, 10]) # отрисовка препятствий
 
@@ -87,7 +110,7 @@ while not game_over: # начало основного цикла игры
     nadpis = font.render("Очки: " + str(score), True, red) # создали переменную надпись
     dis.blit(nadpis, (10, 10))
     pygame.draw.rect(dis, blue, [x_1, y_1, 10, 10]) # отрисовка прямоугольника синего цвета на игр экране
-    pygame.draw.rect(dis, red, [apple_x, apple_y, 10, 10])  # отрисовка яблока
+    pygame.draw.rect(dis, green, [apple_x, apple_y, 10, 10])  # отрисовка яблока
     pygame.display.update() # обновление экрана
 
     if x_1 == apple_x and y_1 == apple_y:
@@ -95,6 +118,9 @@ while not game_over: # начало основного цикла игры
         eating_sound.play()
         apple_x = random.randrange(0, window_size[0], 10)  # используем randrange потому что здесь можно указать шаг (10)
         apple_y = random.randrange(0, window_size[1], 10)
+
+        Length_of_snake +=1
+
         # величиваем скорость змейки, если счетчик кратен 10
         if score % 10 == 0:
             step += 10
@@ -106,16 +132,16 @@ while not game_over: # начало основного цикла игры
             pygame.time.wait(1000)
             game_over = True
 
-    clock.tick(20) # ограничение кадров в секунду
+    clock.tick(25) # ограничение кадров в секунду
 
 
 pygame = quit() # выход из игры
 quit() # выход из программы
 
 #ДЗ на понедельник (Ivanov_Lesson_23.py)
-# 1. Увеличить змейку после поедания каждого яблока
+# 1. Увеличить змейку после поедания каждого яблока +
 # 2. Увеличить очки после каждого съеденного яблока +
 # 3. Усложнять игру по мере поедания яблок +
 # 4. Добавить препятствия +
-# 5. Игра заканчивается, если змейка врежется в свой хвост
+# 5. Игра заканчивается, если змейка врежется в свой хвост +
 # 6. Добавить звуки поедания яблок и game over +
